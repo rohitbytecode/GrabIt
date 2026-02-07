@@ -1,0 +1,114 @@
+@import '../../../../styles/variables';
+
+.admin-dashboard {
+    padding: 32px 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    .dashboard-header {
+        margin-bottom: 32px;
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        p {
+            color: $text-secondary;
+            font-size: 16px;
+        }
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 24px;
+        margin-bottom: 32px;
+
+        .stat-card {
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform $transition-normal;
+
+            &:hover {
+                transform: translateY(-4px);
+            }
+
+            mat-icon {
+                font-size: 48px;
+                width: 48px;
+                height: 48px;
+            }
+
+            &.products mat-icon {
+                color: $primary-color;
+            }
+
+            &.categories mat-icon {
+                color: $accent-color;
+            }
+
+            &.orders mat-icon {
+                color: $info-color;
+            }
+
+            &.revenue mat-icon {
+                color: $success-color;
+            }
+
+            .stat-info {
+                h3 {
+                    font-size: 32px;
+                    font-weight: 700;
+                    margin-bottom: 4px;
+                }
+
+                p {
+                    color: $text-secondary;
+                    margin: 0;
+                }
+            }
+        }
+    }
+
+    .quick-actions {
+        margin-bottom: 32px;
+
+        h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+
+            button {
+                mat-icon {
+                    margin-right: 8px;
+                }
+            }
+        }
+    }
+
+    .recent-activity {
+        padding: 24px;
+
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .placeholder-text {
+            color: $text-secondary;
+            text-align: center;
+            padding: 40px;
+        }
+    }
+}

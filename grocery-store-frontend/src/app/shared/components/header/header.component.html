@@ -1,0 +1,59 @@
+<header class="header">
+    <div class="header-container">
+        <!-- Logo -->
+        <div class="logo" routerLink="/">
+            <mat-icon class="logo-icon">shopping_basket</mat-icon>
+            <span class="logo-text">FreshMart</span>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="nav-menu desktop-menu">
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+            <a routerLink="/categories" routerLinkActive="active">Categories</a>
+            <a routerLink="/products" routerLinkActive="active">Products</a>
+            <a routerLink="/about" routerLinkActive="active">About Us</a>
+            <a routerLink="/contact" routerLinkActive="active">Contact</a>
+        </nav>
+
+        <!-- Right Section -->
+        <div class="header-actions">
+            <!-- Cart Icon -->
+            <button mat-icon-button routerLink="/cart" class="cart-button">
+                <mat-icon [matBadge]="(cartItemCount$ | async) || 0" [matBadgeHidden]="(cartItemCount$ | async) === 0"
+                    matBadgeColor="warn">
+                    shopping_cart
+                </mat-icon>
+            </button>
+
+            <!-- Admin/Login -->
+            <button mat-button *ngIf="!isLoggedIn" routerLink="/auth/login">
+                <mat-icon>person</mat-icon>
+                Login
+            </button>
+
+            <button mat-button *ngIf="isAdmin" routerLink="/admin">
+                <mat-icon>admin_panel_settings</mat-icon>
+                Admin
+            </button>
+
+            <button mat-button *ngIf="isLoggedIn" (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                Logout
+            </button>
+
+            <!-- Mobile Menu Toggle -->
+            <button mat-icon-button class="mobile-menu-toggle" (click)="toggleMobileMenu()">
+                <mat-icon>{{ mobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav" [class.open]="mobileMenuOpen">
+        <a routerLink="/" (click)="toggleMobileMenu()">Home</a>
+        <a routerLink="/categories" (click)="toggleMobileMenu()">Categories</a>
+        <a routerLink="/products" (click)="toggleMobileMenu()">Products</a>
+        <a routerLink="/about" (click)="toggleMobileMenu()">About Us</a>
+        <a routerLink="/contact" (click)="toggleMobileMenu()">Contact</a>
+    </nav>
+</header>

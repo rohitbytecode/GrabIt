@@ -1,0 +1,76 @@
+<div class="admin-dashboard">
+    <div class="dashboard-header">
+        <h1>Admin Dashboard</h1>
+        <p>Welcome back! Here's your store overview</p>
+    </div>
+
+    <div *ngIf="loading" class="loading-container">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div *ngIf="!loading" class="dashboard-content">
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <mat-card class="stat-card products">
+                <mat-icon>inventory_2</mat-icon>
+                <div class="stat-info">
+                    <h3>{{ stats.totalProducts }}</h3>
+                    <p>Total Products</p>
+                </div>
+            </mat-card>
+
+            <mat-card class="stat-card categories">
+                <mat-icon>category</mat-icon>
+                <div class="stat-info">
+                    <h3>{{ stats.totalCategories }}</h3>
+                    <p>Categories</p>
+                </div>
+            </mat-card>
+
+            <mat-card class="stat-card orders">
+                <mat-icon>shopping_bag</mat-icon>
+                <div class="stat-info">
+                    <h3>{{ stats.totalOrders }}</h3>
+                    <p>Total Orders</p>
+                </div>
+            </mat-card>
+
+            <mat-card class="stat-card revenue">
+                <mat-icon>attach_money</mat-icon>
+                <div class="stat-info">
+                    <h3>₹{{ stats.totalRevenue }}</h3>
+                    <p>Total Revenue</p>
+                </div>
+            </mat-card>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <h2>Quick Actions</h2>
+            <div class="action-buttons">
+                <button mat-raised-button color="primary" routerLink="/admin/products">
+                    <mat-icon>add</mat-icon>
+                    Add New Product
+                </button>
+                <button mat-raised-button color="accent" routerLink="/admin/categories">
+                    <mat-icon>add</mat-icon>
+                    Add Category
+                </button>
+                <button mat-raised-button routerLink="/admin/orders">
+                    <mat-icon>list</mat-icon>
+                    View Orders
+                </button>
+                <button mat-stroked-button routerLink="/">
+                    <mat-icon>storefront</mat-icon>
+                    View Store
+                </button>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <mat-card class="recent-activity">
+            <h2>Recent Activity</h2>
+            <p class="placeholder-text">Recent activity and notifications will appear here</p>
+        </mat-card>
+    </div>
+</div>

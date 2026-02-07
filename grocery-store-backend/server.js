@@ -1,19 +1,13 @@
-import express from 'express';
+import 'dotenv/config';
+import app from './src/app.js';
+import connectDB from './src/config/db.js';
 
-const app = express();
+const PORT = process.env.PORT || 5000;
 
-app.get('/', (req, res) => {
-    res.json({ message: 'Backend is online' });
-});
-
-app.get('/health', (req, res) => {
-    res.json({
-        status: 'ok',
-        message: 'Server is running',
-        timestamp: new Date().toISOString()
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
     });
-})
-
-app.listen(5000, () => {
-    console.log('Server is running on port 5000');
+}).catch((err) => {
+    console.log(`Error: ${err}`);
 });

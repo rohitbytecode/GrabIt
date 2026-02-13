@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600" fill="none">
+<rect width="600" height="600" fill="#ECE6DB"/>
+<rect x="120" y="160" width="360" height="280" stroke="#A07957" stroke-width="4"/>
+<path d="M168 392L246 306L312 360L360 324L432 392" stroke="#A07957" stroke-width="4"/>
+<circle cx="248" cy="248" r="28" stroke="#A07957" stroke-width="4"/>
+<text x="300" y="486" text-anchor="middle" fill="#3F4638" font-size="28" font-family="Arial, sans-serif">Harvest &amp; Hearth</text>
+</svg>

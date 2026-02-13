@@ -1,30 +1,24 @@
-<mat-card class="product-card">
-    <div class="product-image">
-        <img [src]="product.image" [alt]="product.name" />
-        <div class="stock-badge" [class.in-stock]="product.inStock" [class.out-stock]="!product.inStock">
-            {{ product.inStock ? 'In Stock' : 'Out of Stock' }}
-        </div>
-        <div *ngIf="product.featured" class="featured-badge">
-            <mat-icon>star</mat-icon>
-        </div>
+<mat-card class="product-card" aria-label="Product card">
+  <a [routerLink]="['/product', product.id]" class="thumb">
+    <img [src]="product.image" [alt]="product.name" (error)="onImageError($event)" />
+    <span class="discount" *ngIf="discountPercent">{{ discountPercent }}% OFF</span>
+  </a>
+
+  <mat-card-content>
+    <h3 [routerLink]="['/product', product.id]">{{ product.name }}</h3>
+    <p class="unit">{{ product.unit || '1 pack' }}</p>
+    <div class="price-row">
+      <strong>{{ product.price | currency:'INR':'symbol':'1.0-0' }}</strong>
+      <span class="old-price" *ngIf="discountPercent">{{ (product.price * 1.15) | currency:'INR':'symbol':'1.0-0' }}</span>
     </div>
 
-    <mat-card-content>
-        <h3 class="product-name" [routerLink]="['/product', product.id]">{{ product.name }}</h3>
-        <p class="product-description">{{ product.description | slice:0:60 }}{{ product.description.length > 60 ? '...'
-            : '' }}</p>
-
-        <div class="product-footer">
-            <div class="price-section">
-                <span class="price">₹{{ product.price }}</span>
-                <span class="unit" *ngIf="product.unit">/ {{ product.unit }}</span>
-            </div>
-
-            <button mat-raised-button color="primary" (click)="onAddToCart()" [disabled]="!product.inStock"
-                class="add-to-cart-btn">
-                <mat-icon>add_shopping_cart</mat-icon>
-                Add
-            </button>
-        </div>
-    </mat-card-content>
+    <div class="actions-row">
+      <div class="qty-control">
+        <button mat-icon-button (click)="decrease()" aria-label="Decrease quantity"><mat-icon>remove</mat-icon></button>
+        <span>{{ quantity }}</span>
+        <button mat-icon-button (click)="increase()" aria-label="Increase quantity"><mat-icon>add</mat-icon></button>
+      </div>
+      <button mat-raised-button color="primary" (click)="onAddToCart()" [disabled]="!product.inStock">Add</button>
+    </div>
+  </mat-card-content>
 </mat-card>

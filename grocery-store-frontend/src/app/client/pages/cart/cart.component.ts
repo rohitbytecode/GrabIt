@@ -10,6 +10,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
+    onImageError(event: Event): void {
+        (event.target as HTMLImageElement).src = "assets/images/placeholder-product.svg";
+    }
+
     cartItems: CartItem[] = [];
     loading = true;
 

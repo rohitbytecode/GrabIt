@@ -1,59 +1,49 @@
-<header class="header">
-    <div class="header-container">
-        <!-- Logo -->
-        <div class="logo" routerLink="/">
-            <mat-icon class="logo-icon">shopping_basket</mat-icon>
-            <span class="logo-text">FreshMart</span>
-        </div>
+<header class="site-header">
+  <div class="top-row container">
+    <a routerLink="/" class="brand">
+      <mat-icon>local_grocery_store</mat-icon>
+      <span>QuickCart Groceries</span>
+    </a>
 
-        <!-- Desktop Navigation -->
-        <nav class="nav-menu desktop-menu">
-            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-            <a routerLink="/categories" routerLinkActive="active">Categories</a>
-            <a routerLink="/products" routerLinkActive="active">Products</a>
-            <a routerLink="/about" routerLinkActive="active">About Us</a>
-            <a routerLink="/contact" routerLinkActive="active">Contact</a>
-        </nav>
+    <form class="search-bar" (ngSubmit)="onSearch()" aria-label="Search products">
+      <mat-icon>search</mat-icon>
+      <input [(ngModel)]="searchQuery" name="searchQuery" placeholder="Search vegetables, fruits, dairy..." aria-label="Search products" />
+      <button mat-raised-button color="primary" type="submit">Search</button>
+    </form>
 
-        <!-- Right Section -->
-        <div class="header-actions">
-            <!-- Cart Icon -->
-            <button mat-icon-button routerLink="/cart" class="cart-button">
-                <mat-icon [matBadge]="(cartItemCount$ | async) || 0" [matBadgeHidden]="(cartItemCount$ | async) === 0"
-                    matBadgeColor="warn">
-                    shopping_cart
-                </mat-icon>
-            </button>
-
-            <!-- Admin/Login -->
-            <button mat-button *ngIf="!isLoggedIn" routerLink="/auth/login">
-                <mat-icon>person</mat-icon>
-                Login
-            </button>
-
-            <button mat-button *ngIf="isAdmin" routerLink="/admin">
-                <mat-icon>admin_panel_settings</mat-icon>
-                Admin
-            </button>
-
-            <button mat-button *ngIf="isLoggedIn" (click)="logout()">
-                <mat-icon>logout</mat-icon>
-                Logout
-            </button>
-
-            <!-- Mobile Menu Toggle -->
-            <button mat-icon-button class="mobile-menu-toggle" (click)="toggleMobileMenu()">
-                <mat-icon>{{ mobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
-            </button>
-        </div>
+    <div class="top-actions">
+      <button mat-button class="location-btn" aria-label="Delivery location">
+        <mat-icon>location_on</mat-icon>
+        Deliver to Mumbai
+      </button>
+      <a mat-button routerLink="/auth/login" *ngIf="!isLoggedIn">Account</a>
+      <a mat-button routerLink="/admin" *ngIf="isAdmin">Admin</a>
+      <button mat-button *ngIf="isLoggedIn" (click)="logout()">Logout</button>
+      <a class="cart-link" routerLink="/cart" aria-label="Cart">
+        <mat-icon [matBadge]="(cartItemCount$ | async) || 0" [matBadgeHidden]="(cartItemCount$ | async) === 0" matBadgeColor="warn">shopping_cart</mat-icon>
+      </a>
+      <button mat-icon-button class="menu-btn" (click)="toggleMobileMenu()"><mat-icon>{{ mobileMenuOpen ? 'close' : 'menu' }}</mat-icon></button>
     </div>
+  </div>
 
-    <!-- Mobile Navigation -->
-    <nav class="mobile-nav" [class.open]="mobileMenuOpen">
-        <a routerLink="/" (click)="toggleMobileMenu()">Home</a>
-        <a routerLink="/categories" (click)="toggleMobileMenu()">Categories</a>
-        <a routerLink="/products" (click)="toggleMobileMenu()">Products</a>
-        <a routerLink="/about" (click)="toggleMobileMenu()">About Us</a>
-        <a routerLink="/contact" (click)="toggleMobileMenu()">Contact</a>
-    </nav>
+  <nav class="category-nav">
+    <div class="container nav-links">
+      <a routerLink="/categories">All Categories</a>
+      <a routerLink="/products" [queryParams]="{categoryId: '1'}">Fruits & Vegetables</a>
+      <a routerLink="/products" [queryParams]="{categoryId: '2'}">Dairy & Bakery</a>
+      <a routerLink="/products" [queryParams]="{categoryId: '3'}">Staples</a>
+      <a routerLink="/products">Daily Essentials</a>
+      <a routerLink="/products">Offers</a>
+    </div>
+  </nav>
+
+  <div class="mobile-panel" [class.open]="mobileMenuOpen">
+    <form class="mobile-search" (ngSubmit)="onSearch()">
+      <input [(ngModel)]="searchQuery" name="mobileSearchQuery" placeholder="Search groceries" />
+      <button mat-button type="submit">Go</button>
+    </form>
+    <a routerLink="/categories" (click)="toggleMobileMenu()">Categories</a>
+    <a routerLink="/products" (click)="toggleMobileMenu()">Products</a>
+    <a routerLink="/cart" (click)="toggleMobileMenu()">Cart</a>
+  </div>
 </header>

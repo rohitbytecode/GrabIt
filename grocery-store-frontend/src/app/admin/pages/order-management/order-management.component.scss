@@ -1,55 +1,6 @@
 @import '../../../../styles/variables';
-
-.order-management {
-    padding: 32px 24px;
-    max-width: 1400px;
-    margin: 0 auto;
-
-    .page-header {
-        margin-bottom: 24px;
-
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        p {
-            color: $text-secondary;
-        }
-    }
-
-    .table-card {
-        padding: 24px;
-
-        .orders-table {
-            width: 100%;
-
-            th {
-                font-weight: 600;
-                background: $bg-tertiary;
-            }
-
-            td,
-            th {
-                padding: 16px;
-            }
-
-            tr:hover {
-                background: $bg-secondary;
-            }
-
-            .status-pending {
-                color: $warning-color;
-            }
-
-            .status-processing {
-                color: $info-color;
-            }
-
-            .status-delivered {
-                color: $success-color;
-            }
-        }
-    }
-}
+@import '../../../../styles/mixins';
+.order-management { @include section-shell; padding:$space-7 0; }
+.page-header { margin-bottom:$space-5; p{color:$color-text-muted;} }
+.table-card { @include flat-panel; padding:$space-4; }
+.orders-table { width:100%; th{background:$color-surface-alt;} }

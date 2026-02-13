@@ -1,65 +1,40 @@
-<div class="product-detail-page" *ngIf="!loading && product">
-    <div class="breadcrumb">
-        <a routerLink="/">Home</a> / <a routerLink="/products">Products</a> / {{ product.name }}
+<div class="product-detail-page container" *ngIf="!loading && product">
+  <div class="main-grid">
+    <div class="gallery">
+      <img class="main-image" [src]="selectedImage" [alt]="product.name" (error)="onImageError($event)">
+      <div class="thumbs">
+        <img [src]="product.image" [alt]="product.name" (click)="selectedImage = product.image" (error)="onImageError($event)">
+        <img [src]="product.image" [alt]="product.name" (click)="selectedImage = product.image" (error)="onImageError($event)">
+        <img [src]="product.image" [alt]="product.name" (click)="selectedImage = product.image" (error)="onImageError($event)">
+      </div>
     </div>
 
-    <div class="product-detail-container">
-        <div class="product-image-section">
-            <img [src]="product.image" [alt]="product.name" />
-        </div>
+    <div class="details">
+      <h1>{{ product.name }}</h1>
+      <p class="price">{{ product.price | currency:'INR':'symbol':'1.0-0' }} <span *ngIf="product.unit">/ {{ product.unit }}</span></p>
+      <p class="desc">{{ product.description }}</p>
 
-        <div class="product-info-section">
-            <h1>{{ product.name }}</h1>
+      <div class="delivery"><mat-icon>local_shipping</mat-icon> Delivery in 30–45 mins</div>
 
-            <div class="stock-info" [class.in-stock]="product.inStock" [class.out-stock]="!product.inStock">
-                <mat-icon>{{ product.inStock ? 'check_circle' : 'cancel' }}</mat-icon>
-                {{ product.inStock ? 'In Stock' : 'Out of Stock' }}
-            </div>
+      <div class="quantity-row">
+        <button mat-icon-button (click)="decreaseQuantity()"><mat-icon>remove</mat-icon></button>
+        <span>{{ quantity }}</span>
+        <button mat-icon-button (click)="increaseQuantity()"><mat-icon>add</mat-icon></button>
+      </div>
+      <button mat-raised-button color="primary" (click)="onAddToCart()" [disabled]="!product.inStock">Add to cart</button>
 
-            <div class="price-section">
-                <span class="price">₹{{ product.price }}</span>
-                <span class="unit" *ngIf="product.unit">/ {{ product.unit }}</span>
-            </div>
-
-            <p class="description">{{ product.description }}</p>
-
-            <div class="quantity-section">
-                <label>Quantity:</label>
-                <div class="quantity-controls">
-                    <button mat-icon-button (click)="decreaseQuantity()">
-                        <mat-icon>remove</mat-icon>
-                    </button>
-                    <span class="quantity-display">{{ quantity }}</span>
-                    <button mat-icon-button (click)="increaseQuantity()">
-                        <mat-icon>add</mat-icon>
-                    </button>
-                </div>
-                <span class="stock-remaining">{{ product.stock }} available</span>
-            </div>
-
-            <div class="action-buttons">
-                <button mat-raised-button color="primary" (click)="onAddToCart()" [disabled]="!product.inStock"
-                    class="add-cart-btn">
-                    <mat-icon>shopping_cart</mat-icon>
-                    Add to Cart
-                </button>
-                <button mat-stroked-button color="primary" routerLink="/products">
-                    Continue Shopping
-                </button>
-            </div>
-
-            <div class="product-meta">
-                <div class="meta-item">
-                    <strong>Category:</strong> {{ product.category }}
-                </div>
-                <div class="meta-item">
-                    <strong>Stock:</strong> {{ product.stock }} units
-                </div>
-            </div>
-        </div>
+      <div class="info-panels">
+        <div><h4>Pack Information</h4><p>Stored and packed hygienically. Best consumed fresh.</p></div>
+        <div><h4>Nutritional Highlights</h4><p>Natural produce with quality checks from source to delivery.</p></div>
+      </div>
     </div>
-</div>
+  </div>
 
-<div *ngIf="loading" class="loading-container">
-    <mat-spinner></mat-spinner>
+  <section class="related">
+    <h2>Related Products</h2>
+    <div class="related-grid">
+      <app-product-card *ngFor="let item of relatedProducts" [product]="item" (addToCart)="onAddRelatedToCart($event)"></app-product-card>
+    </div>
+  </section>
 </div>
+<div *ngIf="loading" class="loading-container"><mat-spinner></mat-spinner></div>

@@ -9,8 +9,27 @@ import { Product } from '@shared/models/interfaces';
 export class ProductCardComponent {
     @Input() product!: Product;
     @Output() addToCart = new EventEmitter<Product>();
+    quantity = 1;
 
     onAddToCart(): void {
-        this.addToCart.emit(this.product);
+        for (let i = 0; i < this.quantity; i++) {
+            this.addToCart.emit(this.product);
+        }
+    }
+
+    increase(): void {
+        if (this.quantity < 10) this.quantity++;
+    }
+
+    decrease(): void {
+        if (this.quantity > 1) this.quantity--;
+    }
+
+    get discountPercent(): number {
+        return this.product.featured ? 15 : 0;
+    }
+
+    onImageError(event: Event): void {
+        (event.target as HTMLImageElement).src = 'assets/images/placeholder-product.svg';
     }
 }

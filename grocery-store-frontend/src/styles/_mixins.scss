@@ -1,0 +1,31 @@
+@import './variables';
+
+@mixin container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@mixin section-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@mixin card {
+  background: $bg-primary;
+  border: 1px solid $border-color;
+  border-radius: $radius-md;
+  box-shadow: $shadow-sm;
+}
+
+@mixin flat-panel {
+  background: $bg-primary;
+  border: 1px solid $border-color;
+  border-radius: $radius-md;
+}
+
+@mixin hover-scale {
+  transition: transform $transition-normal;
+  &:hover { transform: scale(1.02); }
+}

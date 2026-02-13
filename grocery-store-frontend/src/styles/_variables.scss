@@ -1,39 +1,29 @@
-// Primary Colors - Fresh Grocery Theme
-$primary-color: #2E7D32; // Deep green
-$primary-light: #4CAF50; // Light green
-$primary-dark: #1B5E20; // Dark green
+$primary-color: #1f8f4f;
+$primary-dark: #15713d;
+$primary-light: #e8f5ee;
+$accent-color: #ff7a21;
+$accent-dark: #d95f0a;
 
-// Accent Colors
-$accent-color: #FFA726; // Orange
-$accent-light: #FFB74D;
-$accent-dark: #F57C00;
+$success-color: #1f8f4f;
+$warning-color: #f2a700;
+$error-color: #d63b3b;
+$info-color: #1877f2;
 
-// Status Colors
-$success-color: #4CAF50;
-$warning-color: #FF9800;
-$error-color: #F44336;
-$info-color: #2196F3;
+$text-primary: #1f2937;
+$text-secondary: #5b6472;
+$text-disabled: #9ca3af;
 
-// Text Colors
-$text-primary: #212121;
-$text-secondary: #757575;
-$text-disabled: #BDBDBD;
+$bg-primary: #ffffff;
+$bg-secondary: #f5f7fb;
+$bg-tertiary: #eef2f7;
 
-// Background Colors
-$bg-primary: #FFFFFF;
-$bg-secondary: #FAFAFA;
-$bg-tertiary: #F5F5F5;
+$border-color: #dde3ed;
+$border-light: #edf1f7;
 
-// Border Colors
-$border-color: #E0E0E0;
-$border-light: #F0F0F0;
+$shadow-sm: 0 2px 8px rgba(16, 24, 40, 0.06);
+$shadow-md: 0 8px 24px rgba(16, 24, 40, 0.08);
+$shadow-lg: 0 16px 40px rgba(16, 24, 40, 0.12);
 
-// Shadow
-$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-$shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
-$shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
-
-// Spacing
 $spacing-xs: 4px;
 $spacing-sm: 8px;
 $spacing-md: 16px;
@@ -41,20 +31,37 @@ $spacing-lg: 24px;
 $spacing-xl: 32px;
 $spacing-xxl: 48px;
 
-// Border Radius
-$radius-sm: 4px;
-$radius-md: 8px;
-$radius-lg: 12px;
-$radius-xl: 16px;
+$radius-sm: 6px;
+$radius-md: 10px;
+$radius-lg: 16px;
+$radius-xl: 24px;
 
-// Transitions
 $transition-fast: 0.15s ease;
-$transition-normal: 0.3s ease;
-$transition-slow: 0.5s ease;
+$transition-normal: 0.25s ease;
+$transition-slow: 0.4s ease;
 
-// Breakpoints
 $breakpoint-xs: 576px;
 $breakpoint-sm: 768px;
 $breakpoint-md: 992px;
 $breakpoint-lg: 1200px;
 $breakpoint-xl: 1400px;
+
+// Compatibility aliases
+$space-1: $spacing-xs;
+$space-2: $spacing-sm;
+$space-3: 12px;
+$space-4: $spacing-md;
+$space-5: $spacing-lg;
+$space-6: $spacing-xl;
+$space-7: $spacing-xxl;
+$space-8: 64px;
+
+$color-primary: $primary-color;
+$color-primary-strong: $primary-dark;
+$color-accent: $accent-color;
+$color-surface: $bg-secondary;
+$color-surface-alt: $bg-tertiary;
+$color-white: $bg-primary;
+$color-text: $text-primary;
+$color-text-muted: $text-secondary;
+$color-border: $border-color;

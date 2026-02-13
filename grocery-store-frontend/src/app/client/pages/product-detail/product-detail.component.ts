@@ -12,8 +12,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class ProductDetailComponent implements OnInit {
     product: Product | null = null;
+    relatedProducts: Product[] = [];
     loading = true;
     quantity = 1;
+    selectedImage = '';
 
     constructor(
         private route: ActivatedRoute,
@@ -26,6 +28,7 @@ export class ProductDetailComponent implements OnInit {
         const id = this.route.snapshot.paramMap.get('id');
         if (id) {
             this.loadProduct(id);
+            this.loadRelated();
         }
     }
 
@@ -33,37 +36,45 @@ export class ProductDetailComponent implements OnInit {
         this.productService.getProductById(id).subscribe({
             next: (product) => {
                 this.product = product;
+                this.selectedImage = product.image;
                 this.loading = false;
             },
-            error: (error) => {
-                console.error('Error loading product:', error);
-                this.loading = false;
-            }
+            error: () => this.loading = false
+        });
+    }
+
+    loadRelated(): void {
+        this.productService.getFeaturedProducts().subscribe({
+            next: (products) => this.relatedProducts = products.slice(0, 4)
         });
     }
 
     onAddToCart(): void {
         if (this.product) {
             this.cartService.addToCart(this.product, this.quantity).subscribe({
-                next: () => {
-                    this.snackBar.open(`Added ${this.quantity} item(s) to cart!`, 'Close', { duration: 3000 });
-                },
-                error: () => {
-                    this.snackBar.open('Failed to add to cart', 'Close', { duration: 3000 });
-                }
+                next: () => this.snackBar.open(`Added ${this.quantity} item(s)`, 'Close', { duration: 2000 }),
+                error: () => this.snackBar.open('Failed to add', 'Close', { duration: 3000 })
             });
         }
     }
 
+
+    onAddRelatedToCart(product: Product): void {
+        this.cartService.addToCart(product).subscribe({
+            next: () => this.snackBar.open('Added to cart', 'Close', { duration: 2000 }),
+            error: () => this.snackBar.open('Failed to add', 'Close', { duration: 3000 })
+        });
+    }
+
+    onImageError(event: Event): void {
+        (event.target as HTMLImageElement).src = 'assets/images/placeholder-product.svg';
+    }
+
     increaseQuantity(): void {
-        if (this.product && this.quantity < this.product.stock) {
-            this.quantity++;
-        }
+        if (this.product && this.quantity < this.product.stock) this.quantity++;
     }
 
     decreaseQuantity(): void {
-        if (this.quantity > 1) {
-            this.quantity--;
-        }
+        if (this.quantity > 1) this.quantity--;
     }
 }

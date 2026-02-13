@@ -14,6 +14,7 @@ export class HeaderComponent implements OnInit {
     isLoggedIn = false;
     isAdmin = false;
     mobileMenuOpen = false;
+    searchQuery = '';
 
     constructor(
         private authService: AuthService,
@@ -23,7 +24,6 @@ export class HeaderComponent implements OnInit {
 
     ngOnInit(): void {
         this.cartItemCount$ = this.cartService.getCartItemCount$();
-
         this.authService.currentUser$.subscribe(user => {
             this.isLoggedIn = !!user;
             this.isAdmin = user?.role === 'admin';
@@ -32,6 +32,11 @@ export class HeaderComponent implements OnInit {
 
     toggleMobileMenu(): void {
         this.mobileMenuOpen = !this.mobileMenuOpen;
+    }
+
+    onSearch(): void {
+        this.router.navigate(['/products'], { queryParams: { search: this.searchQuery || undefined } });
+        this.mobileMenuOpen = false;
     }
 
     logout(): void {

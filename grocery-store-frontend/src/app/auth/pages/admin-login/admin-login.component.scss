@@ -1,76 +1,9 @@
 @import '../../../../styles/variables';
+@import '../../../../styles/mixins';
 
-.admin-login-page {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
-    padding: 24px;
-
-    .login-card {
-        max-width: 450px;
-        width: 100%;
-        padding: 48px;
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 32px;
-
-            .admin-icon {
-                font-size: 72px;
-                width: 72px;
-                height: 72px;
-                color: $primary-color;
-                margin-bottom: 16px;
-            }
-
-            h1 {
-                font-size: 28px;
-                font-weight: 700;
-                margin-bottom: 8px;
-                color: $text-primary;
-            }
-
-            p {
-                color: $text-secondary;
-            }
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-
-            mat-form-field {
-                width: 100%;
-            }
-
-            .login-btn {
-                width: 100%;
-                padding: 14px;
-                font-size: 16px;
-                margin-top: 8px;
-
-                mat-icon {
-                    margin-right: 8px;
-                }
-            }
-        }
-
-        .login-footer {
-            text-align: center;
-            margin-top: 24px;
-
-            a {
-                color: $primary-color;
-                text-decoration: none;
-                font-weight: 500;
-
-                &:hover {
-                    text-decoration: underline;
-                }
-            }
-        }
-    }
-}
+.admin-login-page { min-height: calc(100vh - 160px); display:grid; place-items:center; padding:$space-6; background:$color-surface; }
+.login-card { @include flat-panel; width:min(460px,100%); padding:$space-6; }
+.login-header { text-align:center; margin-bottom:$space-5; .admin-icon{font-size:56px;height:56px;width:56px;color:$color-accent;} h1{font-size:2.2rem;} p{color:$color-text-muted;} }
+form { display:grid; gap:$space-4; }
+.login-btn { width:100%; }
+.login-footer { margin-top:$space-4; text-align:center; a{color:$color-primary;} }

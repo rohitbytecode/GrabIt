@@ -13,6 +13,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class HomeComponent implements OnInit {
     featuredProducts: Product[] = [];
+    dailyEssentials: Product[] = [];
+    offerProducts: Product[] = [];
     categories: Category[] = [];
     loading = true;
     loadingProducts = true;
@@ -33,13 +35,10 @@ export class HomeComponent implements OnInit {
     loadCategories(): void {
         this.categoryService.getCategories().subscribe({
             next: (categories) => {
-                this.categories = categories.slice(0, 6); // Show first 6 categories
+                this.categories = categories.slice(0, 8);
                 this.loading = false;
             },
-            error: (error) => {
-                console.error('Error loading categories:', error);
-                this.loading = false;
-            }
+            error: () => this.loading = false
         });
     }
 
@@ -47,29 +46,18 @@ export class HomeComponent implements OnInit {
         this.productService.getFeaturedProducts().subscribe({
             next: (products) => {
                 this.featuredProducts = products;
+                this.dailyEssentials = products.slice(0, 4);
+                this.offerProducts = products.slice(4, 8);
                 this.loadingProducts = false;
             },
-            error: (error) => {
-                console.error('Error loading products:', error);
-                this.loadingProducts = false;
-            }
+            error: () => this.loadingProducts = false
         });
     }
 
     onAddToCart(product: Product): void {
         this.cartService.addToCart(product).subscribe({
-            next: () => {
-                this.snackBar.open('Product added to cart!', 'Close', {
-                    duration: 3000,
-                    horizontalPosition: 'end',
-                    verticalPosition: 'top'
-                });
-            },
-            error: (error) => {
-                this.snackBar.open('Failed to add product to cart', 'Close', {
-                    duration: 3000
-                });
-            }
+            next: () => this.snackBar.open('Added to cart', 'Close', { duration: 2000 }),
+            error: () => this.snackBar.open('Unable to add product', 'Close', { duration: 3000 })
         });
     }
 

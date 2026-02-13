@@ -1,0 +1,7 @@
+@import '../../../../styles/variables';
+
+.checkout-page { padding: 22px 20px; h1{margin-bottom:14px;} }
+.checkout-grid { display:grid; grid-template-columns:1fr 340px; gap:16px; }
+.box { background:#fff; border:1px solid $border-color; border-radius:$radius-md; padding:14px; display:grid; gap:10px; }
+.summary p { display:flex; justify-content:space-between; }
+@media (max-width:$breakpoint-md){ .checkout-grid{grid-template-columns:1fr;} }

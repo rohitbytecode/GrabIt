@@ -17,8 +17,11 @@ export class AuthGuard implements CanActivate {
             return true;
         }
 
-        // Not authorized, redirect to admin login
-        this.router.navigate(['/auth/admin-login'], {
+        // Check if the route being accessed is an admin route
+        const isAdminRoute = state.url.startsWith('/admin');
+
+        // Not authorized, redirect to corresponding login
+        this.router.navigate([isAdminRoute ? '/admin' : '/auth/login'], {
             queryParams: { returnUrl: state.url }
         });
         return false;

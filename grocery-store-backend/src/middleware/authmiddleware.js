@@ -10,12 +10,12 @@ const protect = (req, res, next) => {
         try {
             token = req.headers.authorization.split(" ")[1];
 
-            const decoded = jwt.verify(token, process.env.JWT_TOKEN || process.env.JWT_SECRET);
+            const decoded = jwt.verify(token, process.env.JWT_TOKEN || process.env.JWT_SECRET || 'secret');
 
             req.user = {
                 id: decoded.id,
                 role: decoded.role,
-                email:decoded.email
+                email: decoded.email
             };
 
             return next();
@@ -33,8 +33,8 @@ const authorize = (...roles) => {
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {
             return res
-            .status(403)
-            .json({ message: "You do not have permission to perform this action" });
+                .status(403)
+                .json({ message: "You do not have permission to perform this action" });
         }
         next();
     };

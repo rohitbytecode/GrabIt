@@ -11,7 +11,11 @@ const productSchema = new mongoose.Schema({
     inStock: { type: Boolean, default: true },
     featured: { type: Boolean, default: false },
     unit: String
-}, { timestamps: true });
+}, {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+});
 
 const Product = mongoose.model('Product', productSchema);
 export default Product;

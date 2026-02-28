@@ -35,7 +35,7 @@ export class AdminLoginComponent {
             this.authService.adminLogin(email, password).subscribe({
                 next: (response) => {
                     this.snackBar.open('Login successful!', 'Close', { duration: 2000 });
-                    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/admin';
+                    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/admin/dashboard';
                     this.router.navigate([returnUrl]);
                 },
                 error: (error) => {

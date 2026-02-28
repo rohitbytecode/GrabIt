@@ -31,7 +31,7 @@ export class CartService {
     // Add item to cart
     addToCart(product: Product, quantity: number = 1): Observable<ApiResponse<CartItem>> {
         return this.http.post<ApiResponse<CartItem>>(this.apiUrl, {
-            productId: product.id,
+            productId: product.id || (product as any)._id,
             quantity
         }).pipe(
             tap(() => this.loadCart())

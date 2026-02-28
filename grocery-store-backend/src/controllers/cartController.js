@@ -22,8 +22,8 @@ const addToCart = async (req, res) => {
 const updateCartItem = async (req, res) => {
     const { quantity } = req.body;
     const item = await CartItem.findById(req.params.itemId);
-    if (!item) return res.status(404).json({ success:false, message: 'Cart item not found' });
-    if (String(item.user) !== String(req.user.id)) return res.status(403).json({ success:false, message:'Not allowed' });
+    if (!item) return res.status(404).json({ success: false, message: 'Cart item not found' });
+    if (String(item.user) !== String(req.user.id)) return res.status(403).json({ success: false, message: 'Not allowed' });
     item.quantity = Number(quantity);
     await item.save();
     res.json({ success: true, data: item });
@@ -31,9 +31,9 @@ const updateCartItem = async (req, res) => {
 
 const removeFromCart = async (req, res) => {
     const item = await CartItem.findById(req.params.itemId);
-    if (!item) return res.status(404).json({ success:false, message: 'Cart item not found' });
-    if (String(item.user) !== String(req.user.id)) return res.status(403).json({ success:false, message:'Not allowed' });
-    await item.remove();
+    if (!item) return res.status(404).json({ success: false, message: 'Cart item not found' });
+    if (String(item.user) !== String(req.user.id)) return res.status(403).json({ success: false, message: 'Not allowed' });
+    await item.deleteOne();
     res.json({ success: true });
 };
 

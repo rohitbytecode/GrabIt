@@ -53,6 +53,41 @@ This document outlines all the backend APIs required for the Angular frontend to
 
 ---
 
+### POST /api/auth/register
+**Purpose**: Create a new user account and automatically log in
+**Used In**:
+- `AuthService.register()`
+- `ClientRegisterComponent`
+
+**Request Body**:
+```json
+{
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "password": "password123"
+}
+```
+
+**Responses**:
+- `201`:
+```json
+{
+  "success": true,
+  "token": "jwt-token-here",
+  "user": {
+    "id": "user-id",
+    "email": "jane@example.com",
+    "name": "Jane Doe",
+    "role": "user"
+  }
+}
+```
+
+- `400` if missing fields
+- `409` if email already exists
+
+---
+
 ## Product APIs
 
 ### GET /api/products

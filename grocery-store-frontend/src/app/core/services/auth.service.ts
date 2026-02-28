@@ -20,6 +20,14 @@ export class AuthService {
     }
 
     // User Login
+    register(name: string, email: string, password: string): Observable<AuthResponse> {
+        return this.http.post<AuthResponse>(`${this.apiUrl}/register`, { name, email, password }).pipe(
+            tap(response => {
+                this.setSession(response);
+            })
+        );
+    }
+
     login(email: string, password: string): Observable<AuthResponse> {
         return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
             tap(response => {

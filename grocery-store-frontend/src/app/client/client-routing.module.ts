@@ -8,6 +8,7 @@ import { CategoriesComponent } from './pages/categories/categories.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
+import { CheckoutComponent } from './pages/checkout/checkout.component';
 
 const routes: Routes = [
     { path: '', component: HomeComponent, data: { title: 'Home' } },
@@ -16,7 +17,8 @@ const routes: Routes = [
     { path: 'categories', component: CategoriesComponent, data: { title: 'Categories' } },
     { path: 'cart', component: CartComponent, data: { title: 'Shopping Cart' } },
     { path: 'about', component: AboutComponent, data: { title: 'About Us' } },
-    { path: 'contact', component: ContactComponent, data: { title: 'Contact Us' } }
+    { path: 'contact', component: ContactComponent, data: { title: 'Contact Us' } },
+    { path: 'checkout', component: CheckoutComponent, data: { title: 'Checkout' } }
 ];
 
 @NgModule({

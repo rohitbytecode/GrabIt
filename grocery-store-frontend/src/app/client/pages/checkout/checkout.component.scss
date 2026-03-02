@@ -1,0 +1,24 @@
+.checkout-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.item-card {
+    margin-bottom: 0.5rem;
+}
+
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.total-row {
+    text-align: right;
+    margin: 1rem 0;
+}
+
+.full-width {
+    width: 100%;
+}

@@ -65,6 +65,7 @@ export class CartComponent implements OnInit {
     }
 
     proceedToCheckout(): void {
-        this.snackBar.open('Checkout feature coming soon!', 'Close', { duration: 3000 });
+        // navigate to checkout page
+        this.router.navigate(['/checkout']);
     }
 }

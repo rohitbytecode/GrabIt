@@ -6,6 +6,7 @@ import productRoutes from './routes/products.js';
 import categoryRoutes from './routes/categories.js';
 import cartRoutes from './routes/cart.js';
 import contactRoutes from './routes/contact.js';
+import orderRoutes from './routes/orders.js';
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/orders', orderRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {

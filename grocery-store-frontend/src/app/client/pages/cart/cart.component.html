@@ -16,8 +16,7 @@
                 </div>
                 <div class="item-details">
                     <h3>{{ item.product.name }}</h3>
-                    <p class="item-price">₹{{ item.product.price }} <span *ngIf="item.product.unit">/ {{
-                            item.product.unit }}</span></p>
+                    <p class="item-price">{{ item.product.price | currency:'INR':'symbol':'1.2-2' }} <span *ngIf="item.product.unit">/ {{ item.product.unit }}</span></p>
                 </div>
                 <div class="item-quantity">
                     <button mat-icon-button (click)="updateQuantity(item.id, item.quantity - 1)">
@@ -29,7 +28,7 @@
                     </button>
                 </div>
                 <div class="item-subtotal">
-                    <strong>₹{{ item.subtotal }}</strong>
+                    <strong>{{ item.subtotal | currency:'INR':'symbol':'1.2-2' }}</strong>
                 </div>
                 <div class="item-actions">
                     <button mat-icon-button color="warn" (click)="removeItem(item.id)">
@@ -43,7 +42,7 @@
             <h2>Order Summary</h2>
             <div class="summary-row">
                 <span>Subtotal:</span>
-                <strong>₹{{ cartTotal }}</strong>
+                <strong>{{ cartTotal | currency:'INR':'symbol':'1.2-2' }}</strong>
             </div>
             <div class="summary-row">
                 <span>Delivery:</span>
@@ -51,7 +50,7 @@
             </div>
             <div class="summary-row total">
                 <span>Total:</span>
-                <strong>₹{{ cartTotal > 500 ? cartTotal : cartTotal + 40 }}</strong>
+                <strong>{{ (cartTotal > 500 ? cartTotal : cartTotal + 40) | currency:'INR':'symbol':'1.2-2' }}</strong>
             </div>
             <button mat-raised-button color="primary" class="checkout-btn" (click)="proceedToCheckout()">
                 <mat-icon>payment</mat-icon>

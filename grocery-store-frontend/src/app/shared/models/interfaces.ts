@@ -31,6 +31,15 @@ export interface CartItem {
     subtotal: number;
 }
 
+// simplified order item stored in backend
+export interface OrderItem {
+    productId: string;
+    name: string;
+    price: number;
+    quantity: number;
+    subtotal: number;
+}
+
 // User Model
 export interface User {
     id: string;
@@ -44,7 +53,7 @@ export interface User {
 export interface Order {
     id: string;
     userId: string;
-    items: CartItem[];
+    items: OrderItem[]; // stored as simplified items instead of CartItem
     total: number;
     status: 'pending' | 'processing' | 'delivered' | 'cancelled';
     createdAt: Date;

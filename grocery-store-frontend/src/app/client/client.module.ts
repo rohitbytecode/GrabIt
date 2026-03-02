@@ -7,6 +7,7 @@ import { ProductsComponent } from './pages/products/products.component';
 import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { CartComponent } from './pages/cart/cart.component';
+import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 
@@ -17,6 +18,7 @@ import { ContactComponent } from './pages/contact/contact.component';
         ProductDetailComponent,
         CategoriesComponent,
         CartComponent,
+        CheckoutComponent,
         AboutComponent,
         ContactComponent
     ],

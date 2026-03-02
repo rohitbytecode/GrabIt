@@ -1,0 +1,33 @@
+<div class="checkout-container" *ngIf="!loading">
+    <h2>Checkout</h2>
+
+    <div *ngIf="cartItems.length === 0" class="empty">
+        <p>Your cart is empty. Add some products before checking out.</p>
+    </div>
+
+    <div *ngIf="cartItems.length > 0">
+        <mat-card *ngFor="let item of cartItems" class="item-card">
+            <div class="item-row">
+                <span>{{ item.product.name }}</span>
+                <span>{{ item.quantity }} x {{ item.product.price | currency:'INR':'symbol':'1.2-2' }}</span>
+                <span>{{ item.subtotal | currency:'INR':'symbol':'1.2-2' }}</span>
+            </div>
+        </mat-card>
+
+        <div class="total-row">
+            <strong>Total:</strong> {{ cartTotal | currency:'INR':'symbol':'1.2-2' }}
+        </div>
+
+        <mat-form-field class="full-width">
+            <mat-label>Delivery Address</mat-label>
+            <input matInput [(ngModel)]="deliveryAddress" placeholder="Enter your address">
+        </mat-form-field>
+
+        <!-- fixed to cash payment only - just a label -->
+        <p><strong>Payment method:</strong> Cash on delivery</p>
+
+        <button mat-raised-button color="primary" (click)="placeOrder()">
+            Place Order
+        </button>
+    </div>
+</div>

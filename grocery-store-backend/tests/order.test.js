@@ -3,6 +3,7 @@ import app from '../src/app.js';
 import { connectDB, closeDB, clearDB } from './setup.js';
 import User from '../src/models/User.js';
 import Product from '../src/models/Product.js';
+import Order from '../src/models/Order.js';
 
 let token;
 let user;
@@ -31,6 +32,7 @@ describe('Order API', () => {
                     {
                         productId: product1._id,
                         name: 'Banana',
+                        image: '',
                         price: 0.75,
                         quantity: 4,
                         subtotal: 3
@@ -58,6 +60,21 @@ describe('Order API', () => {
                 .send({ items: [], total: 0 });
 
             expect(res.statusCode).toBe(401);
+        });
+    });
+
+    describe('GET /api/orders/me', () => {
+        it('should return orders for authenticated user', async () => {
+            // create an order directly
+            await Order.create({ userId: user.id, items: [], total: 0 });
+            const res = await request(app)
+                .get('/api/orders/me')
+                .set('Authorization', `Bearer ${token}`);
+
+            expect(res.statusCode).toBe(200);
+            expect(res.body.success).toBe(true);
+            expect(Array.isArray(res.body.data)).toBe(true);
+            expect(res.body.data.length).toBe(1);
         });
     });
 });

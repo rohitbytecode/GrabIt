@@ -52,6 +52,7 @@ export class CheckoutComponent implements OnInit {
             items: this.cartItems.map(item => ({
                 productId: item.product.id || (item.product as any)._id,
                 name: item.product.name,
+                image: item.product.image,
                 price: item.product.price,
                 quantity: item.quantity,
                 subtotal: item.subtotal

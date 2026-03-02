@@ -10,6 +10,7 @@ import { CartComponent } from './pages/cart/cart.component';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
+import { OrdersComponent } from './pages/orders/orders.component';
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import { ContactComponent } from './pages/contact/contact.component';
         CategoriesComponent,
         CartComponent,
         CheckoutComponent,
+        OrdersComponent,
         AboutComponent,
         ContactComponent
     ],

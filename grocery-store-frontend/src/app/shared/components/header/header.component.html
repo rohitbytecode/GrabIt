@@ -13,6 +13,7 @@
             <a routerLink="/products" routerLinkActive="active">Products</a>
             <a routerLink="/about" routerLinkActive="active">About Us</a>
             <a routerLink="/contact" routerLinkActive="active">Contact</a>
+            <a *ngIf="isLoggedIn" routerLink="/orders" routerLinkActive="active">My Orders</a>
         </nav>
 
         <!-- Right Section -->

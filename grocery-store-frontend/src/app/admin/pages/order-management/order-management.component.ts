@@ -1,32 +1,63 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { OrderService } from '@core/services/order.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-interface Order {
-    id: string;
-    orderNumber: string;
-    customerName: string;
-    total: number;
-    status: 'pending' | 'processing' | 'delivered';
-    date: Date;
-    items: number;
-}
+// we adapt the Order interface from shared; user info may come as nested object
+
 
 @Component({
     selector: 'app-order-management',
     templateUrl: './order-management.component.html',
     styleUrls: ['./order-management.component.scss']
 })
-export class OrderManagementComponent {
-    // Mock orders data (UI only as specified)
-    orders: Order[] = [
-        { id: '1', orderNumber: 'ORD-001', customerName: 'John Doe', total: 1250, status: 'pending', date: new Date(), items: 5 },
-        { id: '2', orderNumber: 'ORD-002', customerName: 'Jane Smith', total: 890, status: 'processing', date: new Date(), items: 3 },
-        { id: '3', orderNumber: 'ORD-003', customerName: 'Bob Johnson', total: 2100, status: 'delivered', date: new Date(), items: 8 }
-    ];
-
+export class OrderManagementComponent implements OnInit {
+    orders: any[] = []; // will hold raw orders from API
     displayedColumns: string[] = ['orderNumber', 'customer', 'items', 'total', 'status', 'date', 'actions'];
 
-    updateOrderStatus(order: Order, newStatus: string): void {
-        order.status = newStatus as 'pending' | 'processing' | 'delivered';
+    constructor(
+        private orderService: OrderService,
+        private snackBar: MatSnackBar
+    ) { }
+
+    ngOnInit(): void {
+        this.loadOrders();
+    }
+
+    loadOrders(): void {
+        this.orderService.getAllOrders().subscribe({
+            next: res => {
+                if (res.success) {
+                    // transform orders to add orderNumber / customerName etc
+                    this.orders = res.data.map(o => ({
+                        ...o,
+                        orderNumber: `ORD-${o._id.slice(-6).toUpperCase()}`,
+                        customerName: o.userId?.name || o.userId?.email || 'Unknown',
+                        date: o.createdAt,
+                        itemsCount: Array.isArray(o.items) ? o.items.length : 0,
+                        itemNames: Array.isArray(o.items) ? o.items.map((i: any) => i.name).join(', ') : ''
+                    }));
+                }
+            },
+            error: err => {
+                console.error('Failed to load orders', err);
+                this.snackBar.open('Unable to fetch orders', 'Close', { duration: 3000 });
+            }
+        });
+    }
+
+    updateOrderStatus(order: any, newStatus: string): void {
+        this.orderService.updateOrderStatus(order._id || order.id, newStatus).subscribe({
+            next: res => {
+                if (res.success) {
+                    order.status = res.data.status;
+                    this.snackBar.open('Status updated', 'Close', { duration: 2000 });
+                }
+            },
+            error: err => {
+                console.error('Status update failed', err);
+                this.snackBar.open('Failed to update status', 'Close', { duration: 3000 });
+            }
+        });
     }
 
     getStatusClass(status: string): string {

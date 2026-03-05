@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '@core/services/cart.service';
 import { OrderService } from '@core/services/order.service';
-import { CartItem } from '@shared/models/interfaces';
+import { PaymentService, RazorpayOrder } from '@core/services/payment.service';
+import { CartItem, Order } from '@shared/models/interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -13,15 +14,20 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class CheckoutComponent implements OnInit {
     cartItems: CartItem[] = [];
     loading = true;
+    processingPayment = false;
     houseNumber = '';
     street = '';
     city = '';
     state = '';
     pinCode = '';
+    paymentMethod: 'cod' | 'online' = 'cod'; // cod = Cash on Delivery, online = Razorpay
+    customerEmail = '';
+    customerName = '';
 
     constructor(
         private cartService: CartService,
         private orderService: OrderService,
+        private paymentService: PaymentService,
         private snackBar: MatSnackBar,
         private router: Router
     ) { }
@@ -61,7 +67,16 @@ export class CheckoutComponent implements OnInit {
             this.snackBar.open('Cart is empty', 'Close', { duration: 2000 });
             return;
         }
-        const orderPayload = {
+
+        if (this.paymentMethod === 'cod') {
+            this.submitCashOnDeliveryOrder();
+        } else if (this.paymentMethod === 'online') {
+            this.submitOnlinePaymentOrder();
+        }
+    }
+
+    private submitCashOnDeliveryOrder(): void {
+        const orderPayload: Partial<Order> = {
             items: this.cartItems.map(item => ({
                 productId: item.product.id || (item.product as any)._id,
                 name: item.product.name,
@@ -71,7 +86,8 @@ export class CheckoutComponent implements OnInit {
                 subtotal: item.subtotal
             })),
             total: this.cartTotal,
-            deliveryAddress: this.deliveryAddress
+            deliveryAddress: this.deliveryAddress,
+            paymentMethod: 'cod'
         };
 
         this.orderService.placeOrder(orderPayload).subscribe({
@@ -84,5 +100,83 @@ export class CheckoutComponent implements OnInit {
                 this.snackBar.open('Failed to place order', 'Close', { duration: 3000 });
             }
         });
+    }
+
+    private submitOnlinePaymentOrder(): void {
+        if (!this.customerEmail.trim() || !this.customerName.trim()) {
+            this.snackBar.open('Please provide your name and email', 'Close', { duration: 2000 });
+            return;
+        }
+
+        this.processingPayment = true;
+
+        // Step 1: Create Razorpay order
+        this.paymentService.createPaymentOrder(this.cartTotal).subscribe({
+            next: (response) => {
+                if (response.success && response.order && response.keyId) {
+                    // Step 2: Open Razorpay payment modal
+                    this.openRazorpayPayment(response.order, response.keyId);
+                } else {
+                    this.processingPayment = false;
+                    this.snackBar.open('Failed to create payment order', 'Close', { duration: 3000 });
+                }
+            },
+            error: (error) => {
+                this.processingPayment = false;
+                console.error('Error creating payment order:', error);
+                this.snackBar.open('Failed to initiate payment', 'Close', { duration: 3000 });
+            }
+        });
+    }
+
+    private openRazorpayPayment(orderDetails: RazorpayOrder, keyId: string): void {
+        this.paymentService.openRazorpayModal(
+            orderDetails,
+            keyId,
+            this.customerEmail,
+            this.customerName,
+            (response) => this.handlePaymentSuccess(response, orderDetails.id),
+            (error) => this.handlePaymentFailure(error)
+        );
+    }
+
+    private handlePaymentSuccess(paymentResponse: any, orderId: string): void {
+        // Step 3: Payment successful, create order in backend
+        const orderPayload: Partial<Order> = {
+            items: this.cartItems.map(item => ({
+                productId: item.product.id || (item.product as any)._id,
+                name: item.product.name,
+                image: item.product.image,
+                price: item.product.price,
+                quantity: item.quantity,
+                subtotal: item.subtotal
+            })),
+            total: this.cartTotal,
+            deliveryAddress: this.deliveryAddress,
+            paymentMethod: 'online',
+            razorpayOrderId: orderId,
+            razorpayPaymentId: paymentResponse.razorpay_payment_id,
+            razorpaySignature: paymentResponse.razorpay_signature
+        };
+
+        this.orderService.placeOrder(orderPayload).subscribe({
+            next: () => {
+                this.processingPayment = false;
+                this.snackBar.open('Order placed successfully! Payment confirmed.', 'Close', { duration: 3000 });
+                this.cartService.clearCart().subscribe();
+                this.router.navigate(['/']);
+            },
+            error: (error) => {
+                this.processingPayment = false;
+                console.error('Error placing order:', error);
+                this.snackBar.open('Order creation failed after payment', 'Close', { duration: 3000 });
+            }
+        });
+    }
+
+    private handlePaymentFailure(error: any): void {
+        this.processingPayment = false;
+        console.error('Payment failed:', error);
+        this.snackBar.open('Payment failed. Please try again.', 'Close', { duration: 3000 });
     }
 }

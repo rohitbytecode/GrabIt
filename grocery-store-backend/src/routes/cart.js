@@ -8,8 +8,8 @@ router.use(protect);
 
 router.get('/', getCart);
 router.post('/', addToCart);
+router.delete('/clear', clearCart); // Must be before :itemId route
 router.put('/:itemId', updateCartItem);
 router.delete('/:itemId', removeFromCart);
-router.delete('/clear', clearCart);
 
 export default router;

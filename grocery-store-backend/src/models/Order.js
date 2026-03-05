@@ -18,7 +18,15 @@ const OrderSchema = new mongoose.Schema({
         enum: ['pending', 'processing', 'delivered', 'cancelled'],
         default: 'pending'
     },
-    paymentMethod: { type: String, default: 'cash' },
+    paymentMethod: { 
+        type: String, 
+        enum: ['cod', 'online'],
+        default: 'cod' 
+    },
+    // Payment details for online payments
+    razorpayOrderId: { type: String },
+    razorpayPaymentId: { type: String },
+    razorpaySignature: { type: String },
     deliveryAddress: { type: String },
     createdAt: { type: Date, default: Date.now }
 });

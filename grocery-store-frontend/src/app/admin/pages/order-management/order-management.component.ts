@@ -35,7 +35,8 @@ export class OrderManagementComponent implements OnInit {
                         deliveryAddress: o.deliveryAddress || 'N/A',
                         date: o.createdAt,
                         itemsCount: Array.isArray(o.items) ? o.items.length : 0,
-                        itemNames: Array.isArray(o.items) ? o.items.map((i: any) => i.name).join(', ') : ''
+                        itemNames: Array.isArray(o.items) ? o.items.map((i: any) => i.name).join(', ') : '',
+                        paymentMethodDisplay: o.paymentMethod === 'online' ? 'Online Payment' : 'Cash on Delivery'
                     }));
                 }
             },

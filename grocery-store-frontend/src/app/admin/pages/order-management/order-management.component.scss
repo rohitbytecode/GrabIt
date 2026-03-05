@@ -50,6 +50,26 @@
             .status-delivered {
                 color: $success-color;
             }
+
+            .payment-badge {
+                display: inline-block;
+                padding: 6px 12px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+
+                &.cod {
+                    background-color: #fff3cd;
+                    color: #856404;
+                }
+
+                &.online {
+                    background-color: #d4edda;
+                    color: #155724;
+                }
+            }
         }
     }
 }

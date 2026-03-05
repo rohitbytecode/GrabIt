@@ -1,23 +1,40 @@
 import Order from '../models/Order.js';
 
-// create a new order (cash payment only)
+// create a new order (supports both cod and online payment)
 export const createOrder = async (req, res) => {
     try {
-        const { items, total, deliveryAddress } = req.body;
+        const { items, total, deliveryAddress, paymentMethod, razorpayOrderId, razorpayPaymentId, razorpaySignature } = req.body;
 
         if (!items || !Array.isArray(items) || items.length === 0) {
             return res.status(400).json({ success: false, message: 'Order must contain at least one item' });
         }
 
+        // Determine payment method (default to cod)
+        const selectedPaymentMethod = paymentMethod && ['cod', 'online'].includes(paymentMethod) ? paymentMethod : 'cod';
+
+        // Validate online payment details
+        if (selectedPaymentMethod === 'online' && (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature)) {
+            return res.status(400).json({ success: false, message: 'Online payment requires Razorpay details' });
+        }
+
         // items may include image property from client
-        const order = await Order.create({
+        const orderData = {
             userId: req.user.id,
             items,
             total,
             deliveryAddress,
-            paymentMethod: 'cash',
-            status: 'pending'
-        });
+            paymentMethod: selectedPaymentMethod,
+            status: selectedPaymentMethod === 'online' ? 'processing' : 'pending'
+        };
+
+        // Add Razorpay details for online payments
+        if (selectedPaymentMethod === 'online') {
+            orderData.razorpayOrderId = razorpayOrderId;
+            orderData.razorpayPaymentId = razorpayPaymentId;
+            orderData.razorpaySignature = razorpaySignature;
+        }
+
+        const order = await Order.create(orderData);
 
         res.status(201).json({ success: true, data: order });
     } catch (err) {

@@ -56,6 +56,10 @@ export interface Order {
     items: OrderItem[]; // stored as simplified items instead of CartItem
     total: number;
     status: 'pending' | 'processing' | 'delivered' | 'cancelled';
+    paymentMethod?: 'cod' | 'online';
+    razorpayOrderId?: string;
+    razorpayPaymentId?: string;
+    razorpaySignature?: string;
     createdAt: Date;
     deliveryAddress?: string;
 }

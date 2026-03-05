@@ -45,11 +45,47 @@
             <input matInput [(ngModel)]="pinCode" required>
         </mat-form-field>
 
-        <!-- fixed to cash payment only - just a label -->
-        <p><strong>Payment method:</strong> Cash on delivery</p>
+        <h3>Payment Method</h3>
+        <mat-radio-group [(ngModel)]="paymentMethod" class="payment-method-group">
+            <mat-radio-button value="cod">Cash on Delivery</mat-radio-button>
+            <mat-radio-button value="online">Online Payment (Razorpay)</mat-radio-button>
+        </mat-radio-group>
 
-        <button mat-raised-button color="primary" (click)="placeOrder()" [disabled]="!isFormValid()">
-            Place Order
+        <!-- Customer Information for Online Payment -->
+        <div *ngIf="paymentMethod === 'online'" class="customer-info-section">
+            <h3>Your Information</h3>
+            
+            <mat-form-field class="full-width">
+                <mat-label>Full Name</mat-label>
+                <input matInput [(ngModel)]="customerName" required>
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+                <mat-label>Email Address</mat-label>
+                <input matInput type="email" [(ngModel)]="customerEmail" required>
+            </mat-form-field>
+
+            <div class="payment-info">
+                <p>
+                    <strong>Amount to pay:</strong>
+                    {{ cartTotal | currency:'INR':'symbol':'1.2-2' }}
+                </p>
+                <p class="payment-description">
+                    You will be redirected to Razorpay's secure payment gateway to complete your payment.
+                </p>
+            </div>
+        </div>
+
+        <button 
+            mat-raised-button 
+            color="primary" 
+            (click)="placeOrder()" 
+            [disabled]="!isFormValid() || processingPayment"
+            [class.loading]="processingPayment">
+            <span *ngIf="!processingPayment">
+                {{ paymentMethod === 'cod' ? 'Place Order' : 'Proceed to Payment' }}
+            </span>
+            <span *ngIf="processingPayment">Processing...</span>
         </button>
     </div>
 </div>

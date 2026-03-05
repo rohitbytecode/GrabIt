@@ -63,17 +63,22 @@
                     "defaultConfiguration": "production"
                 },
                 "serve": {
-                    "builder": "@angular-devkit/build-angular:dev-server",
-                    "configurations": {
-                        "production": {
-                            "buildTarget": "grocery-store-frontend:build:production"
-                        },
-                        "development": {
-                            "buildTarget": "grocery-store-frontend:build:development"
-                        }
-                    },
-                    "defaultConfiguration": "development"
+                "builder": "@angular-devkit/build-angular:dev-server",
+                "options": {
+                    "buildTarget": "grocery-store-frontend:build:development",
+                    "proxyConfig": "proxy.conf.json"
                 },
+                "configurations": {
+                    "production": {
+                    "buildTarget": "grocery-store-frontend:build:production"
+                    },
+                    "development": {
+                    "buildTarget": "grocery-store-frontend:build:development"
+                    }
+                },
+                "defaultConfiguration": "development"
+                },
+                
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {

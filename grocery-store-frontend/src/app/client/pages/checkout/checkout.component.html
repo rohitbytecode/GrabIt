@@ -18,15 +18,37 @@
             <strong>Total:</strong> {{ cartTotal | currency:'INR':'symbol':'1.2-2' }}
         </div>
 
+        <h3>Delivery Address</h3>
+
         <mat-form-field class="full-width">
-            <mat-label>Delivery Address</mat-label>
-            <input matInput [(ngModel)]="deliveryAddress" placeholder="Enter your address">
+            <mat-label>House Number</mat-label>
+            <input matInput [(ngModel)]="houseNumber" required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+            <mat-label>Street</mat-label>
+            <input matInput [(ngModel)]="street">
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+            <mat-label>City</mat-label>
+            <input matInput [(ngModel)]="city" required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+            <mat-label>State</mat-label>
+            <input matInput [(ngModel)]="state">
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+            <mat-label>Pin Code</mat-label>
+            <input matInput [(ngModel)]="pinCode" required>
         </mat-form-field>
 
         <!-- fixed to cash payment only - just a label -->
         <p><strong>Payment method:</strong> Cash on delivery</p>
 
-        <button mat-raised-button color="primary" (click)="placeOrder()">
+        <button mat-raised-button color="primary" (click)="placeOrder()" [disabled]="!isFormValid()">
             Place Order
         </button>
     </div>

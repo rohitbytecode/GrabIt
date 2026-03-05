@@ -13,7 +13,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class CheckoutComponent implements OnInit {
     cartItems: CartItem[] = [];
     loading = true;
-    deliveryAddress = '';
+    houseNumber = '';
+    street = '';
+    city = '';
+    state = '';
+    pinCode = '';
 
     constructor(
         private cartService: CartService,
@@ -41,6 +45,15 @@ export class CheckoutComponent implements OnInit {
 
     get cartTotal(): number {
         return this.cartService.getCartTotal();
+    }
+
+    get deliveryAddress(): string {
+        const parts = [this.houseNumber, this.street, this.city, this.state, this.pinCode].filter(part => part.trim());
+        return parts.join(', ');
+    }
+
+    isFormValid(): boolean {
+        return this.houseNumber.trim().length > 0 && this.city.trim().length > 0 && this.pinCode.trim().length > 0;
     }
 
     placeOrder(): void {

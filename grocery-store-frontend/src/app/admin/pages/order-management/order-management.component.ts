@@ -12,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class OrderManagementComponent implements OnInit {
     orders: any[] = []; // will hold raw orders from API
-    displayedColumns: string[] = ['orderNumber', 'customer', 'items', 'total', 'status', 'date', 'actions'];
+    displayedColumns: string[] = ['orderNumber', 'customer', 'deliveryAddress', 'items', 'total', 'status', 'date', 'actions'];
 
     constructor(
         private orderService: OrderService,
@@ -32,6 +32,7 @@ export class OrderManagementComponent implements OnInit {
                         ...o,
                         orderNumber: `ORD-${o._id.slice(-6).toUpperCase()}`,
                         customerName: o.userId?.name || o.userId?.email || 'Unknown',
+                        deliveryAddress: o.deliveryAddress || 'N/A',
                         date: o.createdAt,
                         itemsCount: Array.isArray(o.items) ? o.items.length : 0,
                         itemNames: Array.isArray(o.items) ? o.items.map((i: any) => i.name).join(', ') : ''

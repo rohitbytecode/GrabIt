@@ -107,6 +107,39 @@
     .mobile-menu-toggle {
       display: none;
     }
+
+    .profile-menu {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      .profile-button {
+        color: white !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px;
+        min-width: auto;
+        padding: 8px 12px !important;
+        height: auto;
+
+        mat-icon {
+          font-size: 24px;
+          width: 24px;
+          height: 24px;
+          margin-right: 0 !important;
+        }
+
+        span {
+          font-size: 14px;
+          font-weight: 500;
+          white-space: nowrap;
+        }
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
   }
 
   .mobile-nav {

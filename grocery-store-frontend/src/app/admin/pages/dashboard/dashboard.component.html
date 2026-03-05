@@ -11,6 +11,14 @@
     <div *ngIf="!loading" class="dashboard-content">
         <!-- Statistics Cards -->
         <div class="stats-grid">
+            <mat-card class="stat-card customers">
+                <mat-icon>people</mat-icon>
+                <div class="stat-info">
+                    <h3>{{ stats.totalCustomers }}</h3>
+                    <p>Total Customers</p>
+                </div>
+            </mat-card>
+
             <mat-card class="stat-card products">
                 <mat-icon>inventory_2</mat-icon>
                 <div class="stat-info">
@@ -38,8 +46,138 @@
             <mat-card class="stat-card revenue">
                 <mat-icon>attach_money</mat-icon>
                 <div class="stat-info">
-                    <h3>₹{{ stats.totalRevenue }}</h3>
+                    <h3>₹{{ stats.totalRevenue | number }}</h3>
                     <p>Total Revenue</p>
+                </div>
+            </mat-card>
+
+            <mat-card class="stat-card contacts">
+                <mat-icon>contact_mail</mat-icon>
+                <div class="stat-info">
+                    <h3>{{ stats.totalContacts }}</h3>
+                    <p>Contact Messages</p>
+                </div>
+            </mat-card>
+        </div>
+
+        <!-- Order Status Overview -->
+        <div class="overview-section">
+            <h2>Order Status Overview</h2>
+            <div class="status-grid">
+                <mat-card class="status-card pending">
+                    <div class="status-info">
+                        <h4>{{ stats.pendingOrders }}</h4>
+                        <p>Pending Orders</p>
+                    </div>
+                    <mat-icon>schedule</mat-icon>
+                </mat-card>
+
+                <mat-card class="status-card processing">
+                    <div class="status-info">
+                        <h4>{{ stats.processingOrders }}</h4>
+                        <p>Processing</p>
+                    </div>
+                    <mat-icon>build</mat-icon>
+                </mat-card>
+
+                <mat-card class="status-card delivered">
+                    <div class="status-info">
+                        <h4>{{ stats.deliveredOrders }}</h4>
+                        <p>Delivered</p>
+                    </div>
+                    <mat-icon>check_circle</mat-icon>
+                </mat-card>
+
+                <mat-card class="status-card cancelled">
+                    <div class="status-info">
+                        <h4>{{ stats.cancelledOrders }}</h4>
+                        <p>Cancelled</p>
+                    </div>
+                    <mat-icon>cancel</mat-icon>
+                </mat-card>
+            </div>
+        </div>
+
+        <!-- Inventory Overview -->
+        <div class="overview-section">
+            <h2>Inventory Overview</h2>
+            <div class="inventory-grid">
+                <mat-card class="inventory-card in-stock">
+                    <div class="inventory-info">
+                        <h4>{{ stats.inStockProducts }}</h4>
+                        <p>In Stock</p>
+                    </div>
+                    <mat-icon>check_circle</mat-icon>
+                </mat-card>
+
+                <mat-card class="inventory-card out-of-stock">
+                    <div class="inventory-info">
+                        <h4>{{ stats.outOfStockProducts }}</h4>
+                        <p>Out of Stock</p>
+                    </div>
+                    <mat-icon>error</mat-icon>
+                </mat-card>
+
+                <mat-card class="inventory-card low-stock">
+                    <div class="inventory-info">
+                        <h4>{{ stats.lowStockProducts }}</h4>
+                        <p>Low Stock (&lt;10)</p>
+                    </div>
+                    <mat-icon>warning</mat-icon>
+                </mat-card>
+            </div>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="overview-section" *ngIf="metrics?.orders?.recentOrderDetails?.length">
+            <h2>Recent Orders</h2>
+            <mat-card class="recent-orders">
+                <table mat-table [dataSource]="metrics!.orders.recentOrderDetails" class="recent-orders-table">
+                    <ng-container matColumnDef="orderNumber">
+                        <th mat-header-cell *matHeaderCellDef>Order #</th>
+                        <td mat-cell *matCellDef="let order">{{ order.orderNumber || order._id.slice(-6).toUpperCase() }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="customer">
+                        <th mat-header-cell *matHeaderCellDef>Customer</th>
+                        <td mat-cell *matCellDef="let order">{{ order.userId?.name || 'N/A' }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="total">
+                        <th mat-header-cell *matHeaderCellDef>Total</th>
+                        <td mat-cell *matCellDef="let order">₹{{ order.total | number }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef>Status</th>
+                        <td mat-cell *matCellDef="let order">
+                            <span class="status-badge" [ngClass]="order.status">{{ order.status }}</span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="date">
+                        <th mat-header-cell *matHeaderCellDef>Date</th>
+                        <td mat-cell *matCellDef="let order">{{ order.createdAt | date:'short' }}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="['orderNumber', 'customer', 'total', 'status', 'date']"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['orderNumber', 'customer', 'total', 'status', 'date'];"></tr>
+                </table>
+            </mat-card>
+        </div>
+
+        <!-- Top Selling Products -->
+        <div class="overview-section" *ngIf="metrics?.products?.topSellingProducts?.length">
+            <h2>Top Selling Products</h2>
+            <mat-card class="top-products">
+                <div class="product-list">
+                    <div *ngFor="let product of metrics!.products.topSellingProducts; let i = index" class="product-item">
+                        <div class="product-rank">#{{ i + 1 }}</div>
+                        <div class="product-details">
+                            <h4>{{ product.name }}</h4>
+                            <p>{{ product.totalSold }} sold • ₹{{ product.totalRevenue | number }} revenue</p>
+                        </div>
+                    </div>
                 </div>
             </mat-card>
         </div>
@@ -60,10 +198,10 @@
                     <mat-icon>list</mat-icon>
                     View Orders
                 </button>
-                <button mat-stroked-button routerLink="/">
+                <!-- <button mat-stroked-button routerLink="/">
                     <mat-icon>storefront</mat-icon>
                     View Store
-                </button>
+                </button> -->
             </div>
         </div>
 

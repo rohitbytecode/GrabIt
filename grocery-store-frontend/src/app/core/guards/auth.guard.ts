@@ -12,18 +12,25 @@ export class AuthGuard implements CanActivate {
     ) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        // Check if user is logged in and is admin
-        if (this.authService.isLoggedIn() && this.authService.isAdmin()) {
-            return true;
+        const isAdminRoute = state.url.startsWith('/admin');
+        const isLoggedIn = this.authService.isLoggedIn();
+        const isAdmin = this.authService.isAdmin();
+
+        // For admin routes
+        if (isAdminRoute) {
+            if (isLoggedIn && isAdmin) {
+                // User is logged in and is admin, allow access to admin routes
+                return true;
+            } else {
+                // Not logged in or not admin, redirect to admin login
+                this.router.navigate(['/admin'], {
+                    queryParams: { returnUrl: state.url }
+                });
+                return false;
+            }
         }
 
-        // Check if the route being accessed is an admin route
-        const isAdminRoute = state.url.startsWith('/admin');
-
-        // Not authorized, redirect to corresponding login
-        this.router.navigate([isAdminRoute ? '/admin' : '/auth/login'], {
-            queryParams: { returnUrl: state.url }
-        });
-        return false;
+        // For non-admin routes, allow access (ClientGuard will handle admin restrictions)
+        return true;
     }
 }

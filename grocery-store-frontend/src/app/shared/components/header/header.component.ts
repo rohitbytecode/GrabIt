@@ -14,6 +14,7 @@ export class HeaderComponent implements OnInit {
     isLoggedIn = false;
     isAdmin = false;
     mobileMenuOpen = false;
+    clientName = '';
 
     constructor(
         private authService: AuthService,
@@ -27,6 +28,7 @@ export class HeaderComponent implements OnInit {
         this.authService.currentUser$.subscribe(user => {
             this.isLoggedIn = !!user;
             this.isAdmin = user?.role === 'admin';
+            this.clientName = user?.name || '';
         });
     }
 

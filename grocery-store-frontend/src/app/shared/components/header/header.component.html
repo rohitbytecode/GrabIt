@@ -1,13 +1,13 @@
 <header class="header">
     <div class="header-container">
         <!-- Logo -->
-        <div class="logo" routerLink="/">
+        <div class="logo" [routerLink]="isAdmin ? '/admin/dashboard' : '/'">
             <mat-icon class="logo-icon">shopping_basket</mat-icon>
             <span class="logo-text">FreshMart</span>
         </div>
 
         <!-- Desktop Navigation -->
-        <nav class="nav-menu desktop-menu">
+        <nav class="nav-menu desktop-menu" *ngIf="!isAdmin">
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
             <a routerLink="/categories" routerLinkActive="active">Categories</a>
             <a routerLink="/products" routerLinkActive="active">Products</a>
@@ -19,7 +19,7 @@
         <!-- Right Section -->
         <div class="header-actions">
             <!-- Cart Icon -->
-            <button mat-icon-button routerLink="/cart" class="cart-button">
+            <button mat-icon-button routerLink="/cart" class="cart-button" *ngIf="!isAdmin">
                 <mat-icon [matBadge]="(cartItemCount$ | async) || 0" [matBadgeHidden]="(cartItemCount$ | async) === 0"
                     matBadgeColor="warn">
                     shopping_cart
@@ -32,25 +32,40 @@
                 Login
             </button>
 
-            <button mat-button *ngIf="isAdmin" routerLink="/admin">
+            <button mat-button *ngIf="isAdmin" routerLink="/admin/dashboard">
                 <mat-icon>admin_panel_settings</mat-icon>
                 Admin
             </button>
 
-            <button mat-button *ngIf="isLoggedIn" (click)="logout()">
+            <button mat-button *ngIf="isAdmin" (click)="logout()">
                 <mat-icon>logout</mat-icon>
                 Logout
             </button>
 
+            <!-- Client Profile Menu -->
+            <div class="profile-menu" *ngIf="isLoggedIn && !isAdmin">
+                <button mat-button [matMenuTriggerFor]="profileMenuTrigger" class="profile-button">
+                    <mat-icon>account_circle</mat-icon>
+                    <span>Welcome, {{ clientName }}</span>
+                </button>
+                
+                <mat-menu #profileMenuTrigger="matMenu">
+                    <button mat-menu-item (click)="logout()">
+                        <mat-icon>logout</mat-icon>
+                        <span>Logout</span>
+                    </button>
+                </mat-menu>
+            </div>
+
             <!-- Mobile Menu Toggle -->
-            <button mat-icon-button class="mobile-menu-toggle" (click)="toggleMobileMenu()">
+            <button mat-icon-button class="mobile-menu-toggle" (click)="toggleMobileMenu()" *ngIf="!isAdmin">
                 <mat-icon>{{ mobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
             </button>
         </div>
     </div>
 
     <!-- Mobile Navigation -->
-    <nav class="mobile-nav" [class.open]="mobileMenuOpen">
+    <nav class="mobile-nav" [class.open]="mobileMenuOpen" *ngIf="!isAdmin">
         <a routerLink="/" (click)="toggleMobileMenu()">Home</a>
         <a routerLink="/categories" (click)="toggleMobileMenu()">Categories</a>
         <a routerLink="/products" (click)="toggleMobileMenu()">Products</a>

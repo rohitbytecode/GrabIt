@@ -51,7 +51,8 @@ describe('Order API', () => {
             expect(res.body.success).toBe(true);
             expect(res.body.data.userId).toEqual(user.id);
             expect(res.body.data.items.length).toBe(1);
-            expect(res.body.data.paymentMethod).toBe('cash');
+            // default method should be cod (cash on delivery)
+            expect(res.body.data.paymentMethod).toBe('cod');
         });
 
         it('should reject creating order without authentication', async () => {

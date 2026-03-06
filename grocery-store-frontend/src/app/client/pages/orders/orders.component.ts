@@ -40,4 +40,22 @@ export class OrdersComponent implements OnInit {
             }
         });
     }
+
+    /**
+     * Convert raw payment method code into a human-friendly label.
+     * Falls back to the raw string if unknown.
+     */
+    getPaymentLabel(method?: string): string {
+        if (!method) {
+            return 'Unknown';
+        }
+        switch (method) {
+            case 'cod':
+                return 'Cash on Delivery';
+            case 'online':
+                return 'Online';
+            default:
+                return method;
+        }
+    }
 }

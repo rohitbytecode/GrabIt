@@ -10,6 +10,7 @@ import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { OrdersComponent } from './pages/orders/orders.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 import { ClientGuard } from '../core/guards/client.guard';
 
 const routes: Routes = [
@@ -21,7 +22,8 @@ const routes: Routes = [
     { path: 'about', component: AboutComponent, canActivate: [ClientGuard], data: { title: 'About Us' } },
     { path: 'contact', component: ContactComponent, canActivate: [ClientGuard], data: { title: 'Contact Us' } },
     { path: 'checkout', component: CheckoutComponent, canActivate: [ClientGuard], data: { title: 'Checkout' } },
-    { path: 'orders', component: OrdersComponent, canActivate: [ClientGuard], data: { title: 'My Orders' } }
+    { path: 'orders', component: OrdersComponent, canActivate: [ClientGuard], data: { title: 'My Orders' } },
+    { path: 'profile', component: ProfileComponent, canActivate: [ClientGuard], data: { title: 'My Profile' } }
 ];
 
 @NgModule({

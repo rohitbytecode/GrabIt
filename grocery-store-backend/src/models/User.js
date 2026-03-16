@@ -5,7 +5,18 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true, lowercase: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ['user', 'admin'], default: 'user' }
+    role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    profilePicture: { type: String, default: '' },
+    phoneNumber: { type: String, default: '' },
+    address: {
+        street: { type: String, default: '' },
+        city: { type: String, default: '' },
+        state: { type: String, default: '' },
+        zipCode: { type: String, default: '' },
+        country: { type: String, default: '' }
+    },
+    dateOfBirth: { type: Date },
+    gender: { type: String, enum: ['male', 'female', 'other', 'prefer-not-to-say'], default: 'prefer-not-to-say' }
 }, {
     timestamps: true,
     toJSON: { virtuals: true },

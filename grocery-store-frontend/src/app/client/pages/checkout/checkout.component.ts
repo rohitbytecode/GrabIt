@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { CartService } from '@core/services/cart.service';
 import { OrderService } from '@core/services/order.service';
 import { PaymentService, RazorpayOrder } from '@core/services/payment.service';
-import { CartItem, Order } from '@shared/models/interfaces';
+import { ProfileService } from '@core/services/profile.service';
+import { CartItem, Order, User } from '@shared/models/interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -23,17 +24,24 @@ export class CheckoutComponent implements OnInit {
     paymentMethod: 'cod' | 'online' = 'cod'; // cod = Cash on Delivery, online = Razorpay
     customerEmail = '';
     customerName = '';
+    
+    // Address Selection
+    addressOption: 'profile' | 'manual' = 'profile';
+    savedAddress: any = null;
+    profileLoading = true;
 
     constructor(
         private cartService: CartService,
         private orderService: OrderService,
         private paymentService: PaymentService,
+        private profileService: ProfileService,
         private snackBar: MatSnackBar,
         private router: Router
     ) { }
 
     ngOnInit(): void {
         this.loadCart();
+        this.loadProfile();
     }
 
     loadCart(): void {
@@ -49,6 +57,61 @@ export class CheckoutComponent implements OnInit {
         });
     }
 
+    loadProfile(): void {
+        this.profileService.getProfile().subscribe({
+            next: (response) => {
+                const profile = response.user;
+                this.savedAddress = profile.address;
+                this.customerName = profile.name || '';
+                this.customerEmail = profile.email || '';
+                
+                // If profile has an address, use it as default
+                if (this.hasSavedAddress()) {
+                    this.addressOption = 'profile';
+                    this.populateFromProfile();
+                } else {
+                    this.addressOption = 'manual';
+                }
+                this.profileLoading = false;
+            },
+            error: (err) => {
+                console.error('Error loading profile:', err);
+                this.addressOption = 'manual';
+                this.profileLoading = false;
+            }
+        });
+    }
+
+    hasSavedAddress(): boolean {
+        return !!(this.savedAddress && (this.savedAddress.street || this.savedAddress.city || this.savedAddress.zipCode));
+    }
+
+    onAddressOptionChange(): void {
+        if (this.addressOption === 'profile') {
+            this.populateFromProfile();
+        } else {
+            this.clearManualAddress();
+        }
+    }
+
+    private populateFromProfile(): void {
+        if (this.savedAddress) {
+            this.street = this.savedAddress.street || '';
+            this.city = this.savedAddress.city || '';
+            this.state = this.savedAddress.state || '';
+            this.pinCode = this.savedAddress.zipCode || '';
+            this.houseNumber = ''; 
+        }
+    }
+
+    private clearManualAddress(): void {
+        this.houseNumber = '';
+        this.street = '';
+        this.city = '';
+        this.state = '';
+        this.pinCode = '';
+    }
+
     get cartTotal(): number {
         return this.cartService.getCartTotal();
     }
@@ -59,6 +122,9 @@ export class CheckoutComponent implements OnInit {
     }
 
     isFormValid(): boolean {
+        if (this.addressOption === 'profile') {
+            return this.hasSavedAddress();
+        }
         return this.houseNumber.trim().length > 0 && this.city.trim().length > 0 && this.pinCode.trim().length > 0;
     }
 

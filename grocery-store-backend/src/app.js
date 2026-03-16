@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import cors from 'cors';
 import morgan from 'morgan';
 import authRoutes from './routes/auth.js';
@@ -9,6 +10,7 @@ import contactRoutes from './routes/contact.js';
 import orderRoutes from './routes/orders.js';
 import metricsRoutes from './routes/metrics.js';
 import paymentRoutes from './routes/payment.routes.js';
+import profileRoutes from './routes/profile.routes.js';
 
 const app = express();
 
@@ -18,7 +20,7 @@ app.use(cors ({
 }));
 
 app.use(express.json());
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.resolve('uploads')));
 
 app.use(morgan('dev', {
     skip: (req) => req.url === '/health'
@@ -48,6 +50,7 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/metrics', metricsRoutes);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/profile', profileRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {

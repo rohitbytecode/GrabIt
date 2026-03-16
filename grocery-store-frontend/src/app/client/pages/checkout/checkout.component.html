@@ -20,30 +20,63 @@
 
         <h3>Delivery Address</h3>
 
-        <mat-form-field class="full-width">
-            <mat-label>House Number</mat-label>
-            <input matInput [(ngModel)]="houseNumber" required>
-        </mat-form-field>
+        <div *ngIf="profileLoading" class="loading-inline">
+            <mat-spinner diameter="20"></mat-spinner>
+            <span>Checking saved addresses...</span>
+        </div>
 
-        <mat-form-field class="full-width">
-            <mat-label>Street</mat-label>
-            <input matInput [(ngModel)]="street">
-        </mat-form-field>
+        <mat-radio-group 
+            *ngIf="!profileLoading && hasSavedAddress()" 
+            [(ngModel)]="addressOption" 
+            (change)="onAddressOptionChange()"
+            class="address-option-group mb-md">
+            <mat-radio-button value="profile">Use Saved Address</mat-radio-button>
+            <mat-radio-button value="manual">Add Manually</mat-radio-button>
+        </mat-radio-group>
 
-        <mat-form-field class="full-width">
-            <mat-label>City</mat-label>
-            <input matInput [(ngModel)]="city" required>
-        </mat-form-field>
+        <!-- Saved Address Display -->
+        <div *ngIf="addressOption === 'profile' && hasSavedAddress()" class="saved-address-card mb-lg">
+            <mat-card>
+                <mat-card-content>
+                    <div class="address-details">
+                        <mat-icon>location_on</mat-icon>
+                        <div>
+                            <p class="mb-xs"><strong>{{ customerName }}</strong></p>
+                            <p class="text-secondary small">{{ street }}</p>
+                            <p class="text-secondary small">{{ city }}, {{ state }} - {{ pinCode }}</p>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
 
-        <mat-form-field class="full-width">
-            <mat-label>State</mat-label>
-            <input matInput [(ngModel)]="state">
-        </mat-form-field>
+        <!-- Manual Address Form -->
+        <div class="address-form" *ngIf="addressOption === 'manual' || !hasSavedAddress()">
+            <mat-form-field class="full-width">
+                <mat-label>House Number / Flat No.</mat-label>
+                <input matInput [(ngModel)]="houseNumber" required>
+            </mat-form-field>
 
-        <mat-form-field class="full-width">
-            <mat-label>Pin Code</mat-label>
-            <input matInput [(ngModel)]="pinCode" required>
-        </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Street / Area</mat-label>
+                <input matInput [(ngModel)]="street">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+                <mat-label>City</mat-label>
+                <input matInput [(ngModel)]="city" required>
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+                <mat-label>State</mat-label>
+                <input matInput [(ngModel)]="state">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+                <mat-label>Pin Code</mat-label>
+                <input matInput [(ngModel)]="pinCode" required>
+            </mat-form-field>
+        </div>
 
         <h3>Payment Method</h3>
         <mat-radio-group [(ngModel)]="paymentMethod" class="payment-method-group">

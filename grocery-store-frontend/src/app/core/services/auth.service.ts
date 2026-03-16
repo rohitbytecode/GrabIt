@@ -79,4 +79,14 @@ export class AuthService {
     getCurrentUser(): User | null {
         return this.currentUserSubject.value;
     }
+
+    public get currentUserValue(): User | null {
+        return this.currentUserSubject.value;
+    }
+
+    // Update current user in storage and subject (for profile updates)
+    updateCurrentUser(user: User): void {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+    }
 }

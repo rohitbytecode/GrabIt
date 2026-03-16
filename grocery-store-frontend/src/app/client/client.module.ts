@@ -11,6 +11,7 @@ import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { OrdersComponent } from './pages/orders/orders.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import { OrdersComponent } from './pages/orders/orders.component';
         CheckoutComponent,
         OrdersComponent,
         AboutComponent,
-        ContactComponent
+        ContactComponent,
+        ProfileComponent
     ],
     imports: [
         SharedModule,
